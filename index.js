@@ -12,7 +12,6 @@ map.addControl(new mapboxgl.FullscreenControl());
 
 async function getData() {
   const data = await API.getStats();
-  console.log(data);
   data.forEach(country => {
     const countryName = country.country;
     const cases = country.cases;
@@ -47,4 +46,51 @@ function createMarker(data) {
   .addTo(map);
 }
 
+const countries = [];
+const form = document.querySelector('.search-bar form');
+const input = document.querySelector('.search-bar input[type=text]');
+
+async function getCountriesData() {
+  const data = await API.getStats();
+  console.log(data);
+  data.forEach((country) => {
+    const countryName = country.country;
+    const countryInfo = country.countryInfo;
+    const coords = [countryInfo.long, countryInfo.lat];
+    
+    const c = {countryName, coords}
+    countries.push(c)
+  })
+
+  console.log(countries);
+}
+
+function searchCountry(country) {
+  
+}
+
+function flyTo(coords) {
+  console.log('Hey');
+  map.flyTo({
+    center: coords,
+    zoom: 6,
+  });
+}
+
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const value = input.value;
+  for(let i = 0; i != countries.length; i++){
+    if (countries[i].countryName.toLowerCase() === value.toLowerCase() ){
+        flyTo(countries[i].coords);
+        break;
+    }
+
+  }
+});
+
+
+
+
+getCountriesData();
 getData();
