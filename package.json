@@ -1,0 +1,20 @@
+{
+  "name": "covid-portugal",
+  "version": "1.0.0",
+  "description": "Geolocation Map consuming Portugal Covid API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vicas7/Covid-Portugal.git"
+  },
+  "author": "Vicente Mourão <vicente7mourao@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Vicas7/Covid-Portugal/issues"
+  },
+  "homepage": "https://github.com/Vicas7/Covid-Portugal#readme",
+  "dependencies": {}
+}

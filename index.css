@@ -1,0 +1,27 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.mapboxgl-marker {
+  max-width: 40px;
+}
+   
+.mapboxgl-popup {
+  max-width: 200px;
+  border-radius: 10px;
+  text-align: left;
+  padding: 10px;
+
+}
+
+.popup {
+}
