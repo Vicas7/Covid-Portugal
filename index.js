@@ -50,9 +50,10 @@ const countries = [];
 const form = document.querySelector('.search-bar form');
 const input = document.querySelector('.search-bar input[type=text]');
 
+input.addEventListener('input', autoComplete)
+
 async function getCountriesData() {
   const data = await API.getStats();
-  console.log(data);
   data.forEach((country) => {
     const countryName = country.country;
     const countryInfo = country.countryInfo;
@@ -62,18 +63,21 @@ async function getCountriesData() {
     countries.push(c)
   })
 
-  console.log(countries);
 }
 
-function searchCountry(country) {
+function autoComplete(event) {
+  const value = input.value;
+  let a = document.createElement('div');
+  a.id = 'autocomplete-list';
+  a.setAttribute('class' , 'autocomplete-list');
   
+  this.parentElement.appendChild(a);
 }
 
 function flyTo(coords) {
-  console.log('Hey');
   map.flyTo({
     center: coords,
-    zoom: 6,
+    zoom: 5.5,
   });
 }
 

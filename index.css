@@ -36,7 +36,7 @@
   padding-left: 10px;
 }
 
-.search-bar input {
+.search-bar .form-e {
   font-size: 14px;
   color: #333;
   border: none;
@@ -46,11 +46,11 @@
   border-radius: 5px;
 }
 
-.search-bar input[type=text] {
+.search-bar  input[type=text] {
   width: 230px;
 }
 
-.search-bar input[type=submit] {
+.search-bar .btn {
   background-color: #c41616;
   color: whitesmoke;
   border: 1px solid#c41616;
