@@ -66,12 +66,39 @@ async function getCountriesData() {
 }
 
 function autoComplete(event) {
-  const value = input.value;
-  let a = document.createElement('div');
-  a.id = 'autocomplete-list';
-  a.setAttribute('class' , 'autocomplete-list');
-  
-  this.parentElement.appendChild(a);
+  closeAllSugestions();
+  const value = input.value.toLowerCase();
+
+  if (value.length !== 0){
+
+    let a = document.createElement('div');
+    a.id = 'autocomplete-list';
+    a.setAttribute('class' , 'autocomplete-list');
+    this.parentElement.appendChild(a);
+    countries.forEach((country) => {
+      const countryName = country.countryName;
+      if (value === countryName.toLowerCase().substr(0,value.length)){
+        let b = document.createElement('div');
+        b.innerHTML = `<strong>${countryName.substr(0, value.length)}</strong>`;
+        b.innerHTML += countryName.substr(value.length);
+        b.addEventListener('click', (event) => {
+          closeAllSugestions();
+          input.value = b.textContent;
+          const e = new Event('submit');
+          form.dispatchEvent(e);
+        });
+        a.appendChild(b);
+      }
+    })
+  }
+}
+
+function closeAllSugestions() {
+  const autocompletes = document.querySelectorAll('.autocomplete-list');
+  autocompletes.forEach((element) => {
+    console.log(element);
+    element.parentElement.removeChild(element);
+  });
 }
 
 function flyTo(coords) {
@@ -82,6 +109,7 @@ function flyTo(coords) {
 }
 
 form.addEventListener('submit', (event) => {
+  console.log('SUBMIT');
   event.preventDefault();
   const value = input.value;
   for(let i = 0; i != countries.length; i++){
