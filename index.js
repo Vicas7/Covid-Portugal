@@ -9,6 +9,10 @@ zoom: 1,
 
 map.addControl(new mapboxgl.NavigationControl());
 map.addControl(new mapboxgl.FullscreenControl());
+map.on('click', closeAllSuggestions);
+map.on('touchstart',closeAllSuggestions);
+map.on('zoom',closeAllSuggestions);
+map.on('drag',closeAllSuggestions);
 
 async function getData() {
   const data = await API.getStats();
@@ -66,7 +70,7 @@ async function getCountriesData() {
 }
 
 function autoComplete(event) {
-  closeAllSugestions();
+  closeAllSuggestions();
   const value = input.value.toLowerCase();
 
   if (value.length !== 0){
@@ -82,7 +86,7 @@ function autoComplete(event) {
         b.innerHTML = `<strong>${countryName.substr(0, value.length)}</strong>`;
         b.innerHTML += countryName.substr(value.length);
         b.addEventListener('click', (event) => {
-          closeAllSugestions();
+          closeAllSuggestions();
           input.value = b.textContent;
           const e = new Event('submit');
           form.dispatchEvent(e);
@@ -93,10 +97,9 @@ function autoComplete(event) {
   }
 }
 
-function closeAllSugestions() {
+function closeAllSuggestions() {
   const autocompletes = document.querySelectorAll('.autocomplete-list');
   autocompletes.forEach((element) => {
-    console.log(element);
     element.parentElement.removeChild(element);
   });
 }
@@ -109,8 +112,8 @@ function flyTo(coords) {
 }
 
 form.addEventListener('submit', (event) => {
-  console.log('SUBMIT');
   event.preventDefault();
+  closeAllSuggestions();
   const value = input.value;
   for(let i = 0; i != countries.length; i++){
     if (countries[i].countryName.toLowerCase() === value.toLowerCase() ){
