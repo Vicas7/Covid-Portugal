@@ -64,6 +64,7 @@
   width: 230px;
   border: 1px solid #d1d1d1;
   border-top: none;
+  border-bottom: none;
   z-index: 99;
 }
 
