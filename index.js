@@ -34,10 +34,10 @@ async function getData() {
     let yesterdayCases, yesterdayActives, yesterdayDeaths, yesterdayRecovered;
 
     if (i <= yesterday.length){
-      yesterdayCases = yesterday[i].cases;
-      yesterdayActives = yesterday[i].active;
-      yesterdayDeaths = yesterday[i].deaths;
-      yesterdayRecovered = yesterday[i].recovered;
+      yesterdayCases = cases - yesterday[i].cases >= 0 ? cases - yesterday[i].cases : yesterday[i].cases - cases;
+      yesterdayActives = actives - yesterday[i].active >= 0 ? actives - yesterday[i].active : yesterday[i].active - actives;;
+      yesterdayDeaths = deaths - yesterday[i].deaths >= 0 ? deaths - yesterday[i].deaths : yesterday[i].deaths - deaths;
+      yesterdayRecovered = recovered - yesterday[i].recovered >= 0 ? recovered - yesterday[i].recovered : yesterday[i].recovered - recovered;
     } else {
       yesterdayCases, yesterdayActives = 0;
       yesterdayDeaths, yesterdayRecovered = 0;
