@@ -1,5 +1,8 @@
 import * as API from "./api.js";
 
+const mapDiv = document.getElementById('map');
+const searchBar = document.querySelector('.search-bar');
+
 mapboxgl.accessToken = 'pk.eyJ1IjoidmljYXM3IiwiYSI6ImNrZDFvc2xnNjE1bjcycnA0cnUzbmd5azEifQ.dXMsyDHqbBBor9mZPQugtw';
 var map = new mapboxgl.Map({
 container: 'map',
@@ -16,6 +19,8 @@ map.on('drag',closeAllSuggestions);
 
 async function getData() {
   const data = await API.getStats();
+  const yesterday = await API.getYesterdayStats();
+  let i = 0;
   data.forEach(country => {
     const countryName = country.country;
     const cases = country.cases;
@@ -25,17 +30,42 @@ async function getData() {
     
     const countryInfo = country.countryInfo;
     const coords = [countryInfo.long, countryInfo.lat];
-    createMarker({countryName, cases, actives, deaths, recovered, coords});
+
+    let yesterdayCases, yesterdayActives, yesterdayDeaths, yesterdayRecovered;
+
+    if (i <= yesterday.length){
+      yesterdayCases = yesterday[i].cases;
+      yesterdayActives = yesterday[i].active;
+      yesterdayDeaths = yesterday[i].deaths;
+      yesterdayRecovered = yesterday[i].recovered;
+    } else {
+      yesterdayCases, yesterdayActives = 0;
+      yesterdayDeaths, yesterdayRecovered = 0;
+    }
+    i++;
+
+    createMarker({
+      countryName,
+      cases,
+      actives,
+      deaths,
+      recovered,
+      coords,
+      yesterdayCases,
+      yesterdayActives,
+      yesterdayDeaths,
+      yesterdayRecovered
+    });
   });
 }
 
 
 function createMarker(data) {
-  let html = `<h3>${data.countryName}</h3>`;
-  html += `<div>Cases: <span>${data.cases}</span></div>`;
-  html += `<div>Active: <span>${data.actives}</span></div>`;
-  html += `<div>Recovered: <span style="color: green">${data.recovered}</span></div>`;
-  html += `<div>Deaths: <span style="color: red"  >${data.deaths}</span></div>`;
+  let html = `<h3 style="text-align: center;">${data.countryName}</h3>`;
+  html += `<div class="info-wrapper""><div style="grid-area: one;">Cases: <span>${data.cases}</span></div><div class="second" style="grid-area: two;">(${data.yesterdayCases})</div>`;
+  html += `<div style="grid-area: three;">Active: <span>${data.actives}</span></div><div class="second" style="grid-area: four;">(${data.yesterdayActives})</div>`;
+  html += `<div style="grid-area: five;">Recovered: <span style="color: green">${data.recovered}</span></div><div class="second" style="grid-area: six;">(${data.yesterdayRecovered})</div>`;
+  html += `<div style="grid-area: seven;">Deaths: <span style="color: red">${data.deaths}</span></div><div class="second" style="grid-area: eight;">(${data.yesterdayDeaths})</div></div>`;
 
   const popup = new mapboxgl.Popup({offset:25, className: 'popup'})
   .setHTML(html);
@@ -57,6 +87,7 @@ const input = document.querySelector('.search-bar input[type=text]');
 input.addEventListener('input', autoComplete)
 
 async function getCountriesData() {
+  countries.length = 0;
   const data = await API.getStats();
   data.forEach((country) => {
     const countryName = country.country;
@@ -64,7 +95,7 @@ async function getCountriesData() {
     const coords = [countryInfo.long, countryInfo.lat];
     
     const c = {countryName, coords}
-    countries.push(c)
+    countries.push(c) 
   })
 
 }
@@ -125,7 +156,10 @@ form.addEventListener('submit', (event) => {
 });
 
 
-
+setInterval(() => {
+  getCountriesData();
+  getData();
+}, 10000);
 
 getCountriesData();
 getData();

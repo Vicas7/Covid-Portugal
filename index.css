@@ -1,3 +1,4 @@
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -78,4 +79,19 @@
 
 .autocomplete-list div:hover {
   background-color: #d3d3d3;
+}
+
+.info-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-areas: 
+      "one two"
+      "three four"
+      "five six" 
+      "seven eight";
+}
+
+.second {
+  text-align: center;
 }
